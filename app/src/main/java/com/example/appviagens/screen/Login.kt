@@ -57,7 +57,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(onAfterLogin: (Int) -> Unit, onBack:() -> Unit, navController : NavController) {
+fun Login(onAfterLogin: (Int) -> Unit, onBack:() -> Unit, navController : NavController) {
     val application = LocalContext.current.applicationContext as Application
 
 
@@ -79,8 +79,9 @@ fun LoginScreen(onAfterLogin: (Int) -> Unit, onBack:() -> Unit, navController : 
 
 
     Scaffold(scaffoldState = scaffoldState, backgroundColor = PurpleGrey80 ) {
-        TopAppBar(title = { Text(text = "Tela de login") })
+        TopAppBar(title = { Text(text = "Tela de login") } )
         Column(
+
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = it),

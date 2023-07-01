@@ -14,10 +14,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.appviagens.screen.ListaDespesas
 import com.example.appviagens.screen.ListaViagem
-import com.example.appviagens.screen.LoginScreen
+import com.example.appviagens.screen.Login
+import com.example.appviagens.screen.NovaDespesa
+import com.example.appviagens.screen.NovaViagem
 import com.example.appviagens.screen.NovoLogin
+import com.example.appviagens.screen.Sobre
+import com.example.appviagens.screen.appBar
 import com.example.appviagens.ui.theme.AppViagensTheme
+import com.example.appviagens.viewModel.CriarNovaViagem
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -45,7 +51,7 @@ fun MyApp() {
 
     NavHost(navController = navController, startDestination = "login" ){
         composable("login"){
-            LoginScreen(
+            Login(
                 onBack = {
                   navController.navigateUp()
                 },
@@ -74,6 +80,7 @@ fun MyApp() {
                 }
             )
         }
+
         composable("lista/{idUsuario}",
             arguments = listOf(navArgument("idUsuario") { type = NavType.StringType })
         ) {
@@ -83,15 +90,66 @@ fun MyApp() {
                 ListaViagem(
                     idUsuario,
                     NovaViagem = { idUsuario ->
-                        navController.navigate("new_travel/$idUsuario")
+                        navController.navigate("novaViagem/$idUsuario")
                     },
                     listaDespesa = {idViagem ->
-                        navController.navigate("list_expense/$idViagem")
+                        navController.navigate("listaDespesa/$idViagem")
+                    },
+                    navController
+                )
+            }
+        }
+        composable(
+            "listaDespesa/{idDespesa}",
+            arguments = listOf(navArgument("idDespesa") { type = NavType.StringType })
+        ){
+            val param = it.arguments?.getString("idDespesa")
+            val idDespesa = param?.toInt()
+            if (idDespesa != null) {
+                ListaDespesas(
+                    idDespesa,
+                    novaDespesa = {idDespesa ->
+                        navController.navigate("novaDespesa/$idDespesa")
                     }
                 )
             }
         }
 
+
+        composable("Sobre"
+        ) {
+            Sobre()
+        }
+        composable(
+            "novaViagem/{idUsuario}",
+            arguments = listOf(navArgument("idUsuario") { type = NavType.StringType })
+        ) {
+            val param = it.arguments?.getString("idUsuario")
+            val idUsuario = param?.toInt()
+            if (idUsuario != null) {
+                NovaViagem(
+                    idUsuario,
+                    onBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+        }
+        composable(
+            "novaDespesa/{idViagem}",
+            arguments = listOf(navArgument("idViagem") { type = NavType.StringType })
+        ) {
+            val param = it.arguments?.getString("idViagem")
+            val idViagem = param?.toInt()
+            if (idViagem != null) {
+                NovaDespesa(
+                    idViagem,
+                    onBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+        }
     }
 }
 
